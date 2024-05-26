@@ -20,5 +20,50 @@ public class Hippodrome {
     horseList.add(secondHorse);
     horseList.add(thirdHorse);
     Hippodrome.game = new Hippodrome(horseList);
+    game.run();
+    game.printWinner();
+  }
+  public void run()  {
+    for(int i = 0; i < 100; i++) {
+      move();
+      print();
+      try {
+        Thread.sleep(200);
+      } catch(InterruptedException ex) {
+        ex.fillInStackTrace();
+      }
+    }
+  }
+  public void move(){
+    for(Horse horse : this.horses) {
+      horse.move();
+    }
+  }
+  public void print(){
+    for(Horse horse : this.horses) {
+      horse.print();
+    }
+    for(int i = 0; i < 10; i++) {
+      System.out.println();
+    }
+  }
+  public Horse getWinner() {
+    double max = 0;
+    for(Horse horse : horses) {
+      max = Math.max(max, horse.getDistance());
+    }
+    double ERR = 1e-10;
+    Object winnerHorse = new Object();
+    for(Horse horse : horses) {
+      if(Math.abs(max - horse.getDistance()) < ERR) {
+        winnerHorse = horse;
+      }
+    }
+    return (Horse) winnerHorse;
+  }
+  
+  public void printWinner() {
+    Horse winnerHorse = getWinner();
+    System.out.printf("Winner is %s !%n", winnerHorse.getName());
   }
 }
